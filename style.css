@@ -77,6 +77,14 @@ body{
     justify-content: center;
     gap:20px;
 }
+.select2{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:20px;
+}
 #fselect{
     border: none;
     font-size: 15px;
@@ -94,4 +102,12 @@ body{
     background-color: rgb(98, 0, 255);
     border-radius: 5px;
     color: #ffff;
+    cursor: pointer;
+}
+i{
+    cursor: pointer;
+    transition: 0.3s all;
+}
+i:hover{
+    transform: scale(130%);
 }

@@ -21,21 +21,42 @@ translateBtn.addEventListener(('click'), () =>{
     let Text = fromText.value;
     traslateFrom = selectTag[0].value,
     traslateTo = selectTag[1].value;
+    if(!Text) return;
+    toText.setAttribute("placeholder", "Translating...");
 
-    let apiURL = `https://api.mymemory.translated.net/get?q=${Text}!&langpair=${traslateFrom}|${traslateTo}`;
-
+    let apiURL = 
+    // `https://api.mymemory.translated.net/get?q=${Text}!&langpair=${traslateFrom}|${traslateTo}`;
+    
+    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${traslateFrom}&tl=${traslateTo}&dt=t&q=${encodeURI(Text) }`;
+    
     fetch(apiURL).then(res => res.json()).then(data =>{
 
-        toText.value = data.responseData.translatedText;
+        // toText.value = data.responseData.translatedText;
+
+        toText.value = data[0][0][0];
+
     });
 });
 
 icons.forEach(icon =>{
 icon.addEventListener( 'click' , ({target}) =>{
-       if(target.classList.contains("copy")){
-         console.log("copy");
-       }else{
-        console.log("speak");
+       if(target.classList.contains("fa-copy")){
+         if(target.id == "from"){
+            navigator.clipboard.writeText(fromText.value);
+         }else{
+            navigator.clipboard.writeText(toText.value);
+         }
+       }
+       else{
+         let utterance;
+            if(target.id == "from") {
+                utterance = new SpeechSynthesisUtterance(fromText.value);
+                utterance.lang = selectTag[0].value;
+            } else {
+                utterance = new SpeechSynthesisUtterance(toText.value);
+                utterance.lang = selectTag[1].value;
+            }
+            speechSynthesis.speak(utterance);
        }
 });
 });
