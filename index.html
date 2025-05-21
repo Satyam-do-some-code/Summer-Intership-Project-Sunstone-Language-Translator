@@ -15,15 +15,15 @@
         </div>
         <div class="selectArea">
             <div class="select1">
-                <i class="fa-solid fa-volume-high speaker" id="from" style="color: grey;"></i>
-                <i class="fa-solid fa-copy" id="from" style="color: grey;" class="copy"></i>
+                <i class="fa-solid fa-volume-high speaker" id="from" style="color: rgb(255, 255, 255);"></i>
+                <i class="fa-solid fa-copy" id="from" style="color: rgb(255, 255, 255);" class="copy"></i>
                  <select name="" id="fselect">
                    
                  </select>
             </div>
             <div class="select2">
-                <i class="fa-solid fa-volume-high copy" id="to" style="color: grey;" class="speaker"></i>
-                <i class="fa-solid fa-copy" id="to" style="color: grey;"></i>
+                <i class="fa-solid fa-volume-high copy" id="to" style="color: rgb(255, 255, 255);" class="speaker"></i>
+                <i class="fa-solid fa-copy" id="to" style="color: rgb(255, 255, 255);"></i>
                  <select name="" id="sselect">
                   
                  </select>
@@ -33,5 +33,47 @@
     </div>
     <script src="countries.js"></script>
     <script src="script.js"></script>
+    
+    <script>
+        const trailContainer = document.createElement('div');
+trailContainer.classList.add('cursor-trail');
+document.body.appendChild(trailContainer);
+
+const dotsCount = 8;
+const dots = [];
+
+for (let i = 0; i < dotsCount; i++) {
+  const dot = document.createElement('div');
+  dot.classList.add('cursor-dot');
+  trailContainer.appendChild(dot);
+  dots.push({el: dot, x: 0, y: 0});
+}
+
+let mouseX = 0, mouseY = 0;
+
+window.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Animate trailing dots
+function animate() {
+  let x = mouseX;
+  let y = mouseY;
+
+  dots.forEach((dot, i) => {
+    dot.x += (x - dot.x) * 0.3;
+    dot.y += (y - dot.y) * 0.3;
+    dot.el.style.transform = `translate3d(${dot.x - 6}px, ${dot.y - 6}px, 0) scale(${1 - i * 0.1})`;
+    dot.el.style.opacity = `${1 - i * 0.12}`;
+    x = dot.x;
+    y = dot.y;
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+    </script>
 </body>
 </html>
