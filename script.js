@@ -34,6 +34,8 @@ translateBtn.addEventListener(('click'), () =>{
         // toText.value = data.responseData.translatedText;
 
         toText.value = data[0][0][0];
+        saveToHistory(Text, data[0][0][0]);
+
 
     });
 });
@@ -60,4 +62,53 @@ icon.addEventListener( 'click' , ({target}) =>{
        }
 });
 });
+
+ 
+// Language swap code
+
+const swapBtn = document.getElementById("swapLangs");
+swapBtn.addEventListener("click", () => {
+  let tempLang = selectTag[0].value;
+  selectTag[0].value = selectTag[1].value;
+  selectTag[1].value = tempLang;
+
+  let tempText = fromText.value;
+  fromText.value = toText.value;
+  toText.value = tempText;
+});
+
+
+// Theme
+document.getElementById("themeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+});
+
+// Clear button
+document.getElementById("clearBtn").addEventListener("click", () => {
+  fromText.value = "";
+  toText.value = "";
+});
+
+const historyList = document.getElementById("historyList");
+let translationHistory = JSON.parse(localStorage.getItem("translationHistory")) || [];
+
+function updateHistoryUI() {
+  historyList.innerHTML = ""; // Clear existing
+  translationHistory.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.original} ➜ ${item.translated}`;
+    historyList.appendChild(li);
+  });
+}
+
+function saveToHistory(original, translated) {
+  translationHistory.unshift({ original, translated });
+  if (translationHistory.length > 10) translationHistory.pop(); // Keep last 10 only
+  localStorage.setItem("translationHistory", JSON.stringify(translationHistory));
+  updateHistoryUI();
+}
+
+// Show history on page load
+updateHistoryUI();
+
 
